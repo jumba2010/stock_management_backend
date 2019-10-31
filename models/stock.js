@@ -1,19 +1,21 @@
 const Sequelize = require('sequelize');
-const db = require('../config/dbconfig');
+const sequelize = require('../config/dbconfig');
 const Product=require('./product');
 const Promotion=require('./promotion');
 const Provider=require('./provider');
-class Stock extends Model {}
-Stock.init({
+const Stock = sequelize.define('stock', {
   quantity: {type:Sequelize.INTEGER, validate: {notNull: true}},
   sellprice: {type:Sequelize.DECIMAL, field: 'sell_price',validate: {notNull: true}},
   purchaseprice: {type:Sequelize.DECIMAL, field: 'purchase_price',validate: {notNull: true}},
-  createdby: {type:Sequelize.INTEGER, field: 'created_by',validate: {notNull: true}},
-  updateddate: {type:Sequelize.DATE, field: 'updated_date'},
-  creationdate: {type:Sequelize.DATE, field: 'creation_date',validate: {notNull: true}},
-  active: {type:Sequelize.BOOLEAN, validate: {notNull: true}},
+  active:{type:Sequelize.BOOLEAN,defaultValue:true, validate: {notNull: true}},
+  createdby:{type:Sequelize.INTEGER,  field: 'created_by',validate: {notNull: true}},
+  updatedby:{type:Sequelize.INTEGER,  field: 'updated_by'},
+  activatedby: {type:Sequelize.INTEGER, field: 'activated_by',validate: {notNull: true}},
+  updatedate: {type:Sequelize.DATE, field: 'update_date'},
+  creationdate: {type:Sequelize.DATE, field: 'creation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
+  activationdate: {type:Sequelize.DATE, field: 'activation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
     
-}, { db, modelName: 'stock' });
+});
 
 Stock.belongsTo(Promotion, {foreignKey: 'promotion_id'});
 Stock.belongsTo(Product, {foreignKey: 'product_id'});
