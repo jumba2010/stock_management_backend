@@ -1,8 +1,6 @@
 const express=require('express');
 const Worker=require('../models/worker');
-const User=require('../models/user');
 const router=express.Router();
-
  
 //Cria Membro
 router.post('/', async (req,res)=>{
@@ -13,12 +11,11 @@ router.post('/', async (req,res)=>{
 
 });
 
-
 //Actualiza Obreiro
 router.put('/:id', async (req,res)=>{
     const {birthdate, picture, name,email,contact,category,address,isuser,updatedby}=req.body;  
     User.update(
-        { birthdate, picture, name,email,contact,category,address,isuser,updatedby},
+        { birthdate, picture, name,email,contact,category,address,isuser,updatedate:Date.now(),updatedby},
         { where: { id:req.params.id} }
       )
         .then(result =>
@@ -32,29 +29,29 @@ router.put('/:id', async (req,res)=>{
 //Busca Todos os Membros
 router.get('/:page', async (req,res)=>{
     var page=req.params.page;
- Worker.findAll({  include: [
-        { model: User}
-     ],offset: (6*page)-6, limit: 6,order: 'creationdate DESC' }).then(function(workers) {
+ Worker.findAll({offset: (6*page)-6, limit: 6,order: 'creationdate DESC' }).then(function(workers) {
         res.send(workers);
       });   
 });
 
 //Busca Obreiro pelo id
 router.get('/unique/:id', async (req,res)=>{
-   Worker.findOne({  include: [
-    { model: User}
- ],where: { id:req.params.id}}).then(function(workers) {
+   Worker.findOne({  where: { id:req.params.id}}).then(function(workers) {
     res.send(workers);
   });
   
 });
 
 //Busca total
-router.get('/count/alll/workers', async (req,res)=>{
-    const total =await Worker.countDocuments();
-    res.status(200).json({
-        total: total
-      });
+router.get('/count/alll/workers', async (req,res)=>{   
+  Worker.count()
+.then(function(total) {
+  res.status(200).json({
+    total: total
+  });
+});
+ 
+  
   
 });
 

@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
-const Worker=require('./worker');
 const Sale = sequelize.define('sale', {
   date: {type:Sequelize.DATE, validate: {notNull: true}},
   total: {type:Sequelize.DECIMAL,validate: {notNull: true}},
@@ -14,8 +13,12 @@ const Sale = sequelize.define('sale', {
   creationdate: {type:Sequelize.DATE, field: 'creation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
   activationdate: {type:Sequelize.DATE, field: 'activation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
      
+},{
+  defaultScope: {
+    where: {
+      active: true
+    }
+  },
 });
 
-
-Sale.belongsTo(Worker, {foreignKey: 'worker_id'});
 module.exports = Sale;

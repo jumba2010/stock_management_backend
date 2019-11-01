@@ -17,11 +17,11 @@ router.post('/', async (req,res)=>{
 });
 
 router.put('/password', async (req,res)=>{   
-    var {username, password}=req.body;
+    var {username, password,updatedby}=req.body;
     const salt=await bcrypt.genSalt(10);
     password= await bcrypt.hash(password,salt);
     User.update(
-        { password: password },
+        { password: password,updatedby,updatedate:Date.now() },
         { where: { username:username,active:true } }
       )
         .then(result =>

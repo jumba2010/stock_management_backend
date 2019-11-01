@@ -11,5 +11,11 @@ const Unity = sequelize.define('unity', {
   creationdate: {type:Sequelize.DATE, field: 'creation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
   activationdate: {type:Sequelize.DATE, field: 'activation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
   
+},{
+  defaultScope: {
+    where: {
+      active: true
+    }
+  },
 });
 module.exports = Unity;
