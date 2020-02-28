@@ -4,14 +4,20 @@ var fs = require('fs');
 const user = require('./routes/user');
 const worker = require('./routes/worker');
 const auth = require('./routes/auth');
-const payment = require('./routes/payment');
-const customer = require('./routes/customer');
-const path = require('path');
+const product = require('./routes/product');
+const producttax = require('./routes/producttax');
+const tax = require('./routes/tax');
+const profile = require('./routes/profile');
+const promotion = require('./routes/promotion');
+const provider = require('./routes/provider');
+const sale = require('./routes/sale');
+const saleitem = require('./routes/saleitem');
+const stock = require('./routes/stock');
+const stockhistory = require('./routes/stockhistory');
+const unity = require('./routes/unity');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const transaction = require('./routes/transaction');
-const keys = require('./config/keys');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const app = express();
@@ -27,10 +33,18 @@ app.use(express.json());
 app.use('/api/user', user);
 app.use('/api/auth', auth);
 app.use('/api/worker', worker);
-app.use('/api/payment', payment);
-app.use('/api/connecteddevice',connecteddevice);
-app.use('/api/email', mailsender);
-app.use('/api/appversion', appversion);
+app.use('/api/product', product);
+app.use('/api/producttax',producttax);
+app.use('/api/profile', profile);
+app.use('/api/promotion', promotion);
+app.use('/api/provider', provider);
+app.use('/api/sale', sale);
+app.use('/api/saleitem', saleitem);
+app.use('/api/stock', stock);
+app.use('/api/stockhistory',stockhistory);
+app.use('/api/tax', tax);
+app.use('/api/unity', unity);
+
 app.use('/public/files', express.static(__dirname + '/public/files'));
 app.use(express.static(__dirname + '/public'));
 
@@ -49,7 +63,6 @@ app.use(
   bodyParser.json()
 );
 app.use(cookieParser());
-app.use(fileUpload());
 
 //Upload pictures
 app.post('/api/upload/pictures', (req, res, next) => {  

@@ -1,16 +1,25 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
+const Sucursal=require('./sucursal');
 const Promotion = sequelize.define('promotion', {
-  description: {type:Sequelize.STRING, validate: {notNull: true,notEmpty: true}},
-  percentage: {type:Sequelize.DECIMAL, validate: {notNull: true}},
-  enddate: {type:Sequelize.INTEGER, field: 'end_date',validate: {notNull: true}},
-  active:{type:Sequelize.BOOLEAN,defaultValue:true, validate: {notNull: true}},
-  createdby:{type:Sequelize.INTEGER,  field: 'created_by',validate: {notNull: true}},
-  updatedby:{type:Sequelize.INTEGER,  field: 'updated_by'},
-  activatedby: {type:Sequelize.INTEGER, field: 'activated_by',validate: {notNull: true}},
-  updatedate: {type:Sequelize.DATE, field: 'update_date'},
-  creationdate: {type:Sequelize.DATE, field: 'creation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
-  activationdate: {type:Sequelize.DATE, field: 'activation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
+  description: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
+  percentage: {type:Sequelize.DECIMAL,allowNull:false, validate: {notNull: true}},
+  enddate: {type:Sequelize.INTEGER, allowNull:false,field: 'end_date',validate: {notNull: true}},
+  sucursalId: {
+    type: Sequelize.INTEGER,
+    field: 'sucursal_id',
+    references: {
+      model: Sucursal,
+      key: 'id', 
+    },allowNull:false,
+    validate: {notNull: true}
+  },
+  syncStatus: {type:Sequelize.INTEGER,allowNull:false,validate: {notNull: true},defaultValue:0},
+  active:{type:Sequelize.BOOLEAN,defaultValue:true,allowNull:false, validate: {notNull: true}},
+  createdBy:{type:Sequelize.INTEGER,  field: 'created_by',allowNull:false,validate: {notNull: true}},
+  updatedBy:{type:Sequelize.INTEGER,  field: 'updated_by'},
+  activatedBy: {type:Sequelize.INTEGER, field: 'activated_by',allowNull:false,validate: {notNull: true}},
+  activationDate: {type:Sequelize.DATE, field: 'activation_date',allowNull:false,defaultValue: Sequelize.NOW,validate: {notNull: true}},
   
 },
 {
@@ -19,5 +28,6 @@ const Promotion = sequelize.define('promotion', {
       active: true
     }
   },
+  tableName:'promotion'
 });
 module.exports = Promotion;

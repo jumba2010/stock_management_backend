@@ -5,8 +5,8 @@ const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {percentage,description,enddate,createdby}=req.body; 
-    Promotion.create({percentage,description,enddate,createdby}).then(function(unity) {
+    const {percentage,description,enddate,createdby,activatedby}=req.body; 
+    Promotion.create({percentage,description,enddate,createdby,activatedby}).then(function(unity) {
         res.send(unity);
       })
 
@@ -15,9 +15,9 @@ router.post('/', async (req,res)=>{
 
 //Actualiza Obreiro
 router.put('/:id', async (req,res)=>{
-    const {percentage,description,enddate,updatedby}=req.body;  
+    const {percentage,description,enddate,updatedby,activatedby}=req.body;  
     User.update(
-        {percentage,description,enddate,updatedby,updatedate:Date.now()},
+        {percentage,description,enddate,updatedby,activatedby,updatedate:Date.now()},
         { where: { id:req.params.id} }
       )
         .then(result =>

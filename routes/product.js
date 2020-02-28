@@ -4,17 +4,17 @@ const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {quantity,price,description,name,alertquantity,availablequantity,barcode,unityid,createdby}=req.body; 
-    Product.create({quantity,price,description,name,alertquantity,availablequantity,barcode,unityid,createdby}).then(function(worker) {
+    const {quantity,price,description,name,alertquantity,availablequantity,barcode,unityid,createdby,activatedby}=req.body; 
+    Product.create({quantity,price,description,name,alertquantity,availablequantity,barcode,unityid,createdby,activatedby}).then(function(worker) {
         res.send(worker);
       })
 });
 
 //Actualiza Obreiro
 router.put('/:id', async (req,res)=>{
-  const {description,updatedby}=req.body;  
+  const {description,updatedby,activatedby}=req.body;  
   User.update(
-      {quantity,price,description,name,alertquantity,availablequantity,barcode,unityid,updatedate:Date.now(),updatedby},
+      {quantity,price,description,name,alertquantity,availablequantity,barcode,unityid,updatedate:Date.now(),updatedby,activatedby},
       { where: { id:req.params.id} }
     )
       .then(result =>

@@ -4,16 +4,16 @@ const Product=require('../models/product');
 const router=express.Router();
  
 router.post('/', async (req,res)=>{
-    const {quantity, productid,createdby}=req.body; 
-    Stock.create({ quantity, productid,createdby}).then(function(worker) {
+    const {quantity, productid,createdby,activatedby}=req.body; 
+    Stock.create({ quantity, productid,createdby,activatedby}).then(function(worker) {
         res.send(worker);
       })
 });
 
 router.put('/:id', async (req,res)=>{
-    const {quantity, productid,updatedby}=req.body;  
+    const {quantity, productid,updatedby,activatedby}=req.body;  
     Stock.update(
-        { quantity, productid,updatedby,updatedate:Date.now()},
+        { quantity, productid,updatedby,activatedby,updatedate:Date.now()},
         { where: { id:req.params.id} }
       )
         .then(result =>

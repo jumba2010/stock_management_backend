@@ -1,23 +1,23 @@
 const express=require('express');
-const Profile=require('../models/profile');
+const Sucursal=require('../models/sucursal');
 const router=express.Router();
 
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {code,description,createdby,activatedby}=req.body; 
-    Profile.create({ code,description,createdby,activatedby}).then(function(result) {
+    const {code,description,createBy,activatedBy}=req.body; 
+    Sucursal.create({ code,description,createBy,activatedBy}).then(function(result) {
         res.send(result);
       })
 
 });
 
 
-//Actualiza Obreiro
 router.put('/:id', async (req,res)=>{
-    const {description,updatedby,activatedby}=req.body;  
-    Profile.update(
-        {description,updatedate:Date.now(),updatedby,activatedby},
+    const {description,updatedBy}=req.body;  
+    Sucursal.update(
+        {description,updatedBy},
+        {fields: ['description','updatedBy']},
         { where: { id:req.params.id} }
       )
         .then(result =>
@@ -28,10 +28,9 @@ router.put('/:id', async (req,res)=>{
         )    
 });
 
-//Busca Todos os Membros
 router.get('/', async (req,res)=>{  
- Profile.findAll().then(function(profiles) {
-        res.send(profiles);
+ Sucursal.findAll().then(function(sucursals) {
+        res.send(sucursals);
       });   
 });
 

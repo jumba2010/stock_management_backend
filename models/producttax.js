@@ -19,13 +19,12 @@ const ProductTax = sequelize.define('product_tax', {
       key: 'id', 
     }
   },
-  active:{type:Sequelize.BOOLEAN,defaultValue:true, validate: {notNull: true}},
-  createdby:{type:Sequelize.INTEGER,  field: 'created_by',validate: {notNull: true}},
-  updatedby:{type:Sequelize.INTEGER,  field: 'updated_by'},
-  activatedby: {type:Sequelize.INTEGER, field: 'activated_by',validate: {notNull: true}},
-  updatedate: {type:Sequelize.DATE, field: 'update_date'},
-  creationdate: {type:Sequelize.DATE, field: 'creation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
-  activationdate: {type:Sequelize.DATE, field: 'activation_date',defaultValue: Sequelize.NOW,validate: {notNull: true}},
+  syncStatus: {type:Sequelize.INTEGER,allowNull:false,validate: {notNull: true},defaultValue:0},
+  active:{type:Sequelize.BOOLEAN,defaultValue:true,allowNull:false, validate: {notNull: true}},
+  createdBy:{type:Sequelize.INTEGER,  field: 'created_by',allowNull:false,validate: {notNull: true}},
+  updatedBy:{type:Sequelize.INTEGER,  field: 'updated_by'},
+  activatedBy: {type:Sequelize.INTEGER, field: 'activated_by',allowNull:false,validate: {notNull: true}},
+  activationDate: {type:Sequelize.DATE, field: 'activation_date',allowNull:false,defaultValue: Sequelize.NOW,validate: {notNull: true}},
     
 },{
   defaultScope: {
@@ -33,6 +32,7 @@ const ProductTax = sequelize.define('product_tax', {
       active: true
     }
   },
+  tableName:'product_tax'
 });
 
 module.exports = ProductTax;

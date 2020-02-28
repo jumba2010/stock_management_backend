@@ -4,8 +4,8 @@ const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {quantity,price,discount,saleid, stockid,createdby}=req.body; 
-    Sale.create({quantity,price,discount,saleid, stockid,createdby}).then(function(worker) {
+    const {quantity,price,discount,saleid, stockid,createdby,activatedby}=req.body; 
+    Sale.create({quantity,price,discount,saleid, stockid,createdby,activatedby}).then(function(worker) {
         res.send(worker);
       })
 });
@@ -13,7 +13,7 @@ router.post('/', async (req,res)=>{
 //Actualiza Obreiro
 router.put('/inativate/:id', async (req,res)=>{
   Sale.update(
-        { active:false,activationdate:Date.now(),activatedby},
+        { active:false,activationdate:Date.now(),activatedby,activatedby},
         { where: { id:req.params.id} }
       ).then(result =>
             res.send(result)

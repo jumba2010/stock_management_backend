@@ -4,8 +4,8 @@ const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {taxid,productid,createdby}=req.body; 
-    ProductTax.create({taxid,productid,createdby}).then(function(worker) {
+    const {taxid,productid,createdby,activatedby}=req.body; 
+    ProductTax.create({taxid,productid,createdby,activatedby}).then(function(worker) {
         res.send(worker);
       })
 });
