@@ -5,8 +5,8 @@ const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {type,description,startdate,value,createdby,activatedby}=req.body; 
-    Tax.create({ type,description,startdate,value,createdby,activatedby}).then(function(unity) {
+    const {type,description,value,createdBy,activatedBy,sucursalId}=req.body; 
+    Tax.create({ type,description,value,createdBy,activatedBy,sucursalId}).then(function(unity) {
         res.send(unity);
       })
 
@@ -29,9 +29,9 @@ router.put('/:id', async (req,res)=>{
 });
 
 //Busca Todos os Membros
-router.get('/', async (req,res)=>{  
- Tax.findAll().then(function(taxes) {
-        res.send(taxes);
+router.get('/:sucursalId', async (req,res)=>{  
+ Tax.findAll({raw:true,where:{sucursalId:req.params.sucursalId}}).then(function(taxes) {
+  res.send(taxes);
       });   
 });
 

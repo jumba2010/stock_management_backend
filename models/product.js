@@ -9,7 +9,7 @@ const Product = sequelize.define('product', {
   availablequantity: {type:Sequelize.INTEGER,allowNull:false, validate: {notNull: true}},
   price:{type:Sequelize.DECIMAL, allowNull:false,validate: {notNull: true}},
    barcode: {type:Sequelize.STRING, allowNull:false,validate: {notNull: true,notEmpty: true,not: ["[a-z]",'i'] }},  
-   unityid: {
+   unityId: {
     type: Sequelize.INTEGER,
     field: 'unity_id',
     references: {

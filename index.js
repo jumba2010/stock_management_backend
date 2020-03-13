@@ -7,6 +7,7 @@ const auth = require('./routes/auth');
 const product = require('./routes/product');
 const producttax = require('./routes/producttax');
 const tax = require('./routes/tax');
+const path = require('path');
 const profile = require('./routes/profile');
 const promotion = require('./routes/promotion');
 const provider = require('./routes/provider');
@@ -21,8 +22,11 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const app = express();
+
+
+
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "http://localhost:8000");
   res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -64,6 +68,8 @@ app.use(
 );
 app.use(cookieParser());
 
+
+
 //Upload pictures
 app.post('/api/upload/pictures', (req, res, next) => {  
 
@@ -102,7 +108,16 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  console.log(err)
+ 
+});
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 

@@ -29,8 +29,8 @@ router.put('/:id', async (req,res)=>{
 });
 
 //Busca Todos os Membros
-router.get('/', async (req,res)=>{  
- Unity.findAll().then(function(unities) {
+router.get('/:sucursalId', async (req,res)=>{ 
+ Unity.findAll({where:{sucursalId:req.params.sucursalId}}).then(function(unities) {
         res.send(unities);
       });   
 });

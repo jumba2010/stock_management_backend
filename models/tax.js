@@ -4,7 +4,8 @@ const Sucursal=require('./sucursal');
 const Tax = sequelize.define('tax', {
   type: {type:Sequelize.STRING, allowNull:false,validate: {notNull: true,notEmpty: true}},
   description: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
-  startdate: {type:Sequelize.DATEONLY, field:'start_date',validate: { isAfter: Sequelize.NOW}},
+  startdate: {type:Sequelize.DATEONLY, field:'start_date',validate: { isAfter: Sequelize.NOW},
+  defaultValue: Sequelize.NOW},
    value: {type:Sequelize.DECIMAL, allowNull:false,validate: {notNull: true, isDecimal: true }},
    sucursalId: {
     type: Sequelize.INTEGER,

@@ -3,7 +3,7 @@ const sequelize = require('../config/dbconfig');
 const Tax=require('./tax');
 const Product=require('./product');
 const ProductTax = sequelize.define('product_tax', {
-  taxid: {
+  taxId: {
     type: Sequelize.INTEGER,
     field: 'tax_id',
     references: {
@@ -11,7 +11,7 @@ const ProductTax = sequelize.define('product_tax', {
       key: 'id', 
     }
   },
-  productid: {
+  productId: {
     type: Sequelize.INTEGER,
     field: 'product_id',
     references: {
