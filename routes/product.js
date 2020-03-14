@@ -3,15 +3,16 @@ const Product=require('../models/product');
 const Unity=require('../models/unity');
 const ProductTax=require('../models/producttax');
 const Tax=require('../models/tax');
+const Category=require('../models/category');
 const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {description,name,alertquantity,barcode,taxes,unityId,createdBy,activatedBy,sucursalId}=req.body; 
-  Product.create({quantity:0,price:0,description,name,alertquantity,availablequantity:0,barcode,unityId,createdBy,activatedBy,sucursalId}).then(async function(product) {  
+    const {description,name,alertquantity,price,barcode,taxes,unityId,categoryId,createdBy,activatedBy,sucursalId}=req.body; 
+  Product.create({quantity:0,price,description,name,alertquantity,categoryId,availablequantity:0,barcode,unityId,createdBy,activatedBy,sucursalId}).then(async function(product) {  
    for (let index = 0; index < taxes.length; index++) {
      const tax = taxes[index];
-     await ProductTax.create({productId:product.id,taxId:tax.id,createdBy,activatedBy});
+     await ProductTax.create({productId:product.id,taxId:tax,createdBy,activatedBy});
     }
     res.send(product);
       })
@@ -84,6 +85,28 @@ router.get('/count/all/products', async (req,res)=>{
   res.status(200).json({
     total: total
   });
+});
+});
+
+
+router.get('/unique/:id', async (req,res)=>{ 
+let product =await  Product.findOne({raw: true,where:{id:req.params.id} });
+let unity=await Unity.findOne({raw: true,where :{id:product.unityId}}); 
+let category=await Category.findOne({raw: true,where :{id:product.categoryId}});
+product.unity=unity; 
+product.category=category; 
+  
+ProductTax.findAll({raw: true,where :{productId:req.params.id}}).then(async function(productTaxes) {
+  let taxes=[];
+  for (let index = 0; index < productTaxes.length; index++) {
+    const element = productTaxes[index];
+    taxes.push(element.taxId);
+  }
+
+product.taxes=taxes;
+
+res.send(product);
+
 });
 });
 

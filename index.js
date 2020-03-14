@@ -16,6 +16,7 @@ const saleitem = require('./routes/saleitem');
 const stock = require('./routes/stock');
 const stockhistory = require('./routes/stockhistory');
 const unity = require('./routes/unity');
+const category = require('./routes/category');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -48,6 +49,7 @@ app.use('/api/stock', stock);
 app.use('/api/stockhistory',stockhistory);
 app.use('/api/tax', tax);
 app.use('/api/unity', unity);
+app.use('/api/category', category);
 
 app.use('/public/files', express.static(__dirname + '/public/files'));
 app.use(express.static(__dirname + '/public'));

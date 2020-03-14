@@ -1,31 +1,9 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
-const Unit=require('./unity');
-const Category=require('./category');
 const Sucursal=require('./sucursal');
-const Product = sequelize.define('product', {
-  description:Sequelize.STRING,
-  name: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
-  alertquantity: {type:Sequelize.INTEGER,allowNull:false, validate: {notNull: true}},
-  availablequantity: {type:Sequelize.INTEGER,allowNull:false, validate: {notNull: true}},
-  price:{type:Sequelize.DECIMAL, allowNull:false,validate: {notNull: true}},
-   barcode: {type:Sequelize.STRING,validate: {not: ["[a-z]",'i'] }},  
-   unityId: {
-    type: Sequelize.INTEGER,
-    field: 'unity_id',
-    references: {
-      model: Unit,
-      key: 'id', 
-    }
-  },
-  categoryId: {
-    type: Sequelize.INTEGER,
-    field: 'category_id',
-    references: {
-      model: Category,
-      key: 'id', 
-    }
-  },
+const Unity = sequelize.define('category', {
+  code: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
+  description: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
   sucursalId: {
     type: Sequelize.INTEGER,
     field: 'sucursal_id',
@@ -41,16 +19,13 @@ const Product = sequelize.define('product', {
   updatedBy:{type:Sequelize.INTEGER,  field: 'updated_by'},
   activatedBy: {type:Sequelize.INTEGER, field: 'activated_by',allowNull:false,validate: {notNull: true}},
   activationDate: {type:Sequelize.DATE, field: 'activation_date',allowNull:false,defaultValue: Sequelize.NOW,validate: {notNull: true}},
-},
-{
+  
+},{
   defaultScope: {
     where: {
       active: true
     }
   },
-
-  tableName:'product'
-}
-);
-
-module.exports = Product;
+  tableName:'category'
+});
+module.exports = Unity;
