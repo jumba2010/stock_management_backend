@@ -2,23 +2,30 @@ const express=require('express');
 const Product=require('../models/product');
 const Unity=require('../models/unity');
 const ProductTax=require('../models/producttax');
-const Tax=require('../models/tax');
+const Stock=require('../models/stock');
 const Category=require('../models/category');
 const router=express.Router();
  
-//Cria Membro
+//Cria Producto
 router.post('/', async (req,res)=>{
-    const {description,name,alertquantity,price,barcode,taxes,unityId,categoryId,createdBy,activatedBy,sucursalId}=req.body; 
-  Product.create({quantity:0,price,description,name,alertquantity,categoryId,availablequantity:0,barcode,unityId,createdBy,activatedBy,sucursalId}).then(async function(product) {  
+    const {groupquantity,purchaseprice,description,name,alertquantity,providerid,sellprice,barcode,taxes,group,unity,availablequantity,category,createdBy,activatedBy,sucursalId}=req.body; 
+  Product.create({groupquantity,groupdescription:group?group.description:null,groupid:group?group.id:null,sellprice,description,name,alertquantity,categoryId:category?category.id:null,categorydescription:category?category.description:null,availablequantity,barcode,unityId:unity.id,unitydescription:unity.description,createdBy,activatedBy,sucursalId}).then(async function(product) {  
    for (let index = 0; index < taxes.length; index++) {
      const tax = taxes[index];
      await ProductTax.create({productId:product.id,taxId:tax,createdBy,activatedBy});
     }
-    res.send(product);
-      })
+
+if(availablequantity){
+
+  await Stock.create({ quantity:availablequantity,productname:name,sellprice,groupquantity,providerid,groupdescription:group?group.description:null,purchaseprice,availablequantity, productid:product.id,sucursalId,createdBy,activatedBy});
+}
+   
+res.send(product);
+      
+});
 });
 
-//Actualiza Obreiro
+//Actualiza Produto
 router.put('/:id', async (req,res)=>{
   const {description,updatedby,activatedby}=req.body;  
   User.update(
@@ -33,7 +40,7 @@ router.put('/:id', async (req,res)=>{
       )    
 });
 
-//Actualiza Obreiro
+//Remove Produto
 router.put('/inativate/:id', async (req,res)=>{
   Product.update(
         { active:false,activationdate:Date.now(),activatedby},

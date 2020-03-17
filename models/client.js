@@ -1,8 +1,11 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
 const Sucursal=require('./sucursal');
-const Unity = sequelize.define('category', {
-  description: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
+const Client = sequelize.define('client', {
+  name: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
+  contact: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
+  email: {type:Sequelize.STRING},
+  picture: {type:Sequelize.STRING},
   sucursalId: {
     type: Sequelize.INTEGER,
     field: 'sucursal_id',
@@ -25,6 +28,6 @@ const Unity = sequelize.define('category', {
       active: true
     }
   },
-  tableName:'category'
+  tableName:'client'
 });
-module.exports = Unity;
+module.exports = Client;

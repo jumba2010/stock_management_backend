@@ -1,13 +1,13 @@
 const express=require('express');
-const Category=require('../models/category');
+const Group=require('../models/group');
 const router=express.Router();
 
  
 //Cria Membro
 router.post('/', async (req,res)=>{
     const {description,createdby,activatedby}=req.body; 
-    Category.create({ description,createdby,activatedby}).then(function(Category) {
-        res.send(Category);
+    Group.create({ description,createdby,activatedby}).then(function(Group) {
+        res.send(Group);
       })
 
 });
@@ -30,10 +30,9 @@ router.put('/:id', async (req,res)=>{
 
 //Busca Todos os Membros
 router.get('/:sucursalId', async (req,res)=>{ 
- Category.findAll({where:{sucursalId:req.params.sucursalId}}).then(function(unities) {
+ Group.findAll({where:{sucursalId:req.params.sucursalId}}).then(function(unities) {
         res.send(unities);
       });   
 });
-
 
 module.exports=router;

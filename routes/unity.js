@@ -5,7 +5,7 @@ const router=express.Router();
  
 //Cria Membro
 router.post('/', async (req,res)=>{
-    const {code,description,createdby,activatedby}=req.body; 
+    const {description,createdby,activatedby}=req.body; 
     Unity.create({ code,description,createdby,activatedby}).then(function(unity) {
         res.send(unity);
       })

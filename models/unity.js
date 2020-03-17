@@ -2,7 +2,6 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
 const Sucursal=require('./sucursal');
 const Unity = sequelize.define('unity', {
-  code: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
   description: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
   sucursalId: {
     type: Sequelize.INTEGER,

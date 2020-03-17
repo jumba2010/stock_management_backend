@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
 const Sucursal=require('./sucursal');
-const Unity = sequelize.define('category', {
+const Group = sequelize.define('group', {
   description: {type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
   sucursalId: {
     type: Sequelize.INTEGER,
@@ -25,6 +25,6 @@ const Unity = sequelize.define('category', {
       active: true
     }
   },
-  tableName:'category'
+  tableName:'group'
 });
-module.exports = Unity;
+module.exports = Group;
