@@ -60,7 +60,8 @@ const Product = sequelize.define('product', {
 {
   defaultScope: {
     where: {
-      active: true
+      active: true,
+      
     }
   },
 

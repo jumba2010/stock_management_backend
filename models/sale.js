@@ -2,9 +2,9 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
 const Sucursal=require('./sucursal');
 const Sale = sequelize.define('sale', {
-  date: {type:Sequelize.DATE, allowNull:false,validate: {notNull: true}},
-  total: {type:Sequelize.DECIMAL,allowNull:false,validate: {notNull: true}},
-  status: {type:Sequelize.STRING,allowNull:false,validate: {notNull: true}},
+  date: {type:Sequelize.DATEONLY, field: 'date',allowNull:false,defaultValue: Sequelize.NOW,validate: {notNull: true}},
+  total: {type:Sequelize.DECIMAL(8,2),allowNull:false,validate: {notNull: true}},
+  status: {type:Sequelize.STRING,allowNull:false,validate: {notNull: true},defaultValue:'DONE'},
   items: {type:Sequelize.INTEGER,allowNull:false,validate: {notNull: true}},
   sucursalId: {
     type: Sequelize.INTEGER,

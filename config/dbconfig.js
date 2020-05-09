@@ -5,10 +5,10 @@ const sequelize = new Sequelize(keys.msqlDbName, keys.msqlUsername, keys.mysqlpa
   logging: false
   });
   sequelize.authenticate().then(() => {
-console.log('Connected to mysql')});
-sequelize.sync({ force: false })
+console.log('Connected to database')});
+sequelize.sync({ force: true })
   .then(() => {
-    console.log(`Database & tables created!`)
+    console.log(`Database Syncronized!`)
   })
 
   module.exports = sequelize;

@@ -2,10 +2,12 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/dbconfig');
 const Sale=require('./sale');
 const Stock=require('./stock');
+const Product=require('./product');
 const SaleItems = sequelize.define('sale_items', {
-  price: {type:Sequelize.DECIMAL,allowNull:false, validate: {notNull: true}},
+  price: {type:Sequelize.DECIMAL(8,2),allowNull:false, validate: {notNull: true}},
   quantity: {type:Sequelize.INTEGER,allowNull:false,validate: {notNull: true}},
-  discount: {type:Sequelize.DECIMAL,allowNull:false,validate: {notNull: true}},
+  productname: {field: 'product_name',type:Sequelize.STRING,allowNull:false, validate: {notNull: true,notEmpty: true}},
+  discount: {type:Sequelize.DECIMAL(6,2),allowNull:false,validate: {notNull: true},defaultValue:0.0},
   saleid: {
     type: Sequelize.INTEGER,
     field: 'sale_id',
@@ -14,6 +16,15 @@ const SaleItems = sequelize.define('sale_items', {
       key: 'id', 
     }
   },
+  productid: {
+    type: Sequelize.INTEGER,
+    field: 'product_id',
+    references: {
+      model: Product,
+      key: 'id', 
+    }
+  },
+  
   stockid: {
     type: Sequelize.INTEGER,
     field: 'stock_id',

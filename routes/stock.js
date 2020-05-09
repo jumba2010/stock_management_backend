@@ -4,10 +4,73 @@ const Product=require('../models/product');
 const router=express.Router();
  
 router.post('/', async (req,res)=>{
-    const {productname,stocktype,sellprice,groupquantity,group,purchaseprice,providerid, productid,sucursalId,createdBy,activatedBy}=req.body; 
-    Stock.create({ quantity:availablequantity,stocktype,productname,sellprice,groupquantity,providerid,groupdescription:group?group.description:null,purchaseprice,availablequantity, productid,sucursalId,createdBy,activatedBy}).then(function(stock) {
+    const {productname,quantity,stocktype,sellprice,groupquantity,group,purchaseprice,providerid, productid,sucursalId,createdBy,activatedBy}=req.body; 
+   
+    //Se for saida de stoc
+   if(stocktype==2){
+     //Busca o stock antigo para abater o stock
+    await  Stock.findAll({raw:true,where:{productid:productid}, order: [
+      ['createdAt', 'ASC'],
+    ], }).then(async function(stocks) {
+      
+      //Abate do Stock
+      let difference=0;
+      let final=false;
+      for (let index = 0; index < stocks.length; index++) {
+        const stock = stocks[index];
+       
+        if(index===0){
+          difference=stock.availablequantity-quantity;
+        }
+
+        else {
+          difference=difference+stock.availablequantity;
+
+        }
+        if(difference<0){
+        await   Stock.update({ availablequantity:0}, 
+          { where: { id:stock.id} }, 
+          {fields: ['availablequantity']});
+        
+        }
+        else if (!final){
+          final=true;
+          await   Stock.update({ availablequantity:difference}, 
+            { where: { id:stock.id} }, 
+            {fields: ['availablequantity']});
+        }
+        
+      }
+
+      await  Stock.create({ quantity:-quantity,stocktype,productname,
+        sellprice,groupquantity,
+        providerid,groupdescription:group?group.description:null,
+        purchaseprice,availablequantity:0, 
+        productid,sucursalId,createdBy,activatedBy});
+        
+      //Abate o stock no produto
+       await Product.decrement({ availablequantity:quantity}, 
+        { where: { id:productid} });
+     
+        res.status(200).json({
+          result: 'sucesso'
+        });
+      
+    })
+   }
+
+   //Acrescenta o stock no produto e actualiza o preco de venda
+   else if (stocktype==1){
+    Stock.create({ quantity,stocktype,productname,sellprice,groupquantity,providerid,groupdescription:group?group.description:null,purchaseprice,availablequantity:quantity, productid,sucursalId,createdBy,activatedBy}).then(async function(stock) {
+      await Product.increment({availablequantity: quantity}, { where: { id:productid} });
+      await Product.update( {sellprice, updatedBy:createdBy},
+        { where: { id:productid} },
+        {fields: ['sellprice','updatedBy']})     
         res.send(stock);
-      })
+        })
+   }
+   
+    
 });
 
 router.put('/:id', async (req,res)=>{
